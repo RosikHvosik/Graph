@@ -81,7 +81,7 @@ std::vector<std::size_t> dfs_non_recursive() const {
                     visited[node] = true;
                     traversal.push_back(node);
 
-                    for (std::size_t j = n; j-- > 0;) { // Чтобы порядок был как у рекурсивного DFS
+                    for (std::size_t j = n; j-- > 0;) {
                         if (adjacencyMatrix[node][j] > 0 && !visited[j]) {
                             s.push(j);
                         }

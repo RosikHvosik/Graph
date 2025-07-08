@@ -1,0 +1,7 @@
+./vscode
+# --- VS Code ---
+.vscode/
+
+*.exe
+input.txt
+output.txt

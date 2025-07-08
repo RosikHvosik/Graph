@@ -41,14 +41,12 @@ int main() {
             std::cout << "\n";
         }
 
-        std::cout << "\nТопологическая сортировка (нерекурсивный DFS):\n";
-        try {
-            auto order = g.topologicalSortDFS();
-            for (auto v : order) std::cout << v + 1 << " ";
-            std::cout << "\n";
-        } catch (const std::exception& ex) {
-            std::cerr << ex.what() << "\n";
+        std::cout << "\nОбход в глубину (нерекурсивный DFS):\n";
+        auto traversal = g.dfs_non_recursive();
+        for (auto v : traversal) {
+            std::cout << v + 1 << " ";
         }
+        std::cout << "\n";
 
     } catch (const std::exception& e) {
         std::cerr << "Ошибка: " << e.what() << std::endl;

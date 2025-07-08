@@ -65,50 +65,35 @@ public:
         return allDistances;
     }
 
-    std::vector<std::size_t> topologicalSortDFS() const {
-        std::vector<bool> visited(n, false);
-        std::vector<std::size_t> result;
-        std::stack<std::size_t> s;
-        std::vector<std::size_t> tempStack;
+std::vector<std::size_t> dfs_non_recursive() const {
+    std::vector<bool> visited(n, false);
+    std::vector<std::size_t> traversal;
+    std::stack<std::size_t> s;
 
-        for (std::size_t i = 0; i < n; ++i) {
-            if (!visited[i]) {
-                s.push(i);
-                while (!s.empty()) {
-                    std::size_t node = s.top();
-                    if (!visited[node]) {
-                        visited[node] = true;
-                        tempStack.push_back(node);
+    for (std::size_t i = 0; i < n; ++i) {
+        if (!visited[i]) {
+            s.push(i);
+            while (!s.empty()) {
+                std::size_t node = s.top();
+                s.pop();
 
-                        for (std::size_t j = 0; j < n; ++j) {
-                            if (adjacencyMatrix[node][j] > 0 && !visited[j]) {
-                                s.push(j);
-                            }
+                if (!visited[node]) {
+                    visited[node] = true;
+                    traversal.push_back(node);
+
+                    for (std::size_t j = n; j-- > 0;) { // Чтобы порядок был как у рекурсивного DFS
+                        if (adjacencyMatrix[node][j] > 0 && !visited[j]) {
+                            s.push(j);
                         }
-                    } else {
-                        s.pop();
-                        if (std::find(result.begin(), result.end(), node) == result.end())
-                            result.insert(result.begin(), node);
                     }
                 }
             }
         }
-
-        // Проверка на наличие цикла с помощью in-degree:
-        std::vector<int> inDegree(n, 0);
-        for (std::size_t u = 0; u < n; ++u)
-            for (std::size_t v = 0; v < n; ++v)
-                if (adjacencyMatrix[u][v] > 0)
-                    inDegree[v]++;
-        int visitedCount = 0;
-        for (int deg : inDegree)
-            if (deg == 0) visitedCount++;
-
-        if (result.size() != n)
-            throw std::runtime_error("Граф содержит цикл — топологическая сортировка невозможна");
-
-        return result;
     }
+
+    return traversal;
+}
+
 
     ~Graph() {
         for (std::size_t i = 0; i < n; ++i) {
